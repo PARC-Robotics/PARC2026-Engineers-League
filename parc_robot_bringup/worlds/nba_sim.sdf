@@ -1,0 +1,392 @@
+<?xml version="1.0"?>
+<sdf version='1.10'>
+  <world name='nba_sim'>
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-contact-system"
+      name="gz::sim::systems::Contact">
+    </plugin>
+
+    <model name='ground_plane'>
+        <static>true</static>
+        <link name='link'>
+          <collision name='collision'>
+            <geometry>
+              <plane>
+                <normal>0 0 1</normal>
+                <size>100 100</size>
+              </plane>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='visual'>
+            <geometry>
+              <plane>
+                <normal>0 0 1</normal>
+                <size>100 100</size>
+              </plane>
+            </geometry>
+            <material>
+              <ambient>0.800000012 0.800000012 0.800000012 1</ambient>
+              <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
+              <specular>0.800000012 0.800000012 0.800000012 1</specular>
+            </material>
+          </visual>
+          <pose>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1</mass>
+            <inertia>
+              <ixx>1</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1</iyy>
+              <iyz>0</iyz>
+              <izz>1</izz>
+            </inertia>
+          </inertial>
+          <enable_wind>false</enable_wind>
+        </link>
+        <pose>0 0 0 0 0 0</pose>
+        <self_collide>false</self_collide>
+      </model>
+
+      <include>
+        <uri>model://cafe_table</uri>
+        <name>cafe_table_1</name>
+        <pose>-0.15233904123306274 -2.9603400230407715 0.0 0 0 0</pose>
+      </include>
+      <include>
+        <uri>model://cafe_table</uri>
+        <name>cafe_table_7</name>
+        <pose>-2.1722400188446045 -5.0545501708984375 0.0 0 0 0.0062432602893310709</pose>
+      </include>
+      <include>
+        <uri>model://cafe_table</uri>
+        <name>cafe_table_9</name>
+        <pose>2.0039401054382324 -5.0513825416564941 0.0 0 0 0</pose>
+      </include>
+      <include>
+        <uri>model://WoodenChair</uri>
+        <name>WoodenChair</name>
+        <pose>-2.2265667915344238 -4.3935337066650391 0.0 0 0 -1.538859965939805</pose>
+      </include>
+      <include>
+        <uri>model://FemaleVisitorSit</uri>
+        <name>FemaleVisitorSit</name>
+        <pose>-2.2398481369018555 -4.3909134864807129 0.0 0 0 0.011338099886587056</pose>
+      </include>
+      <include>
+        <uri>model://WoodenChair</uri>
+        <name>WoodenChair_3</name>
+        <pose>-0.55429303646087646 -2.9439499378204346 0.0 0 0 0</pose>
+      </include>
+      <include>
+        <uri>model://WoodenChair</uri>
+        <name>WoodenChair_5</name>
+        <pose>1.6594259738922119 -5.0773301124572754 0.0 0 0 0</pose>
+      </include>
+      <!-- April Tag 1 -->
+      <include>
+        <name>Apriltag36_11_00001</name>
+        <pose>-3.507 -5.0 1.0 1.5708 -1.5708 1.5708</pose>
+        <static>true</static>
+        <uri>model://Apriltag36_11_00001</uri>
+      </include>
+
+      <!-- April Tag 4 -->
+      <include>
+        <name>Apriltag36_11_00004</name>
+        <pose>0.0 -1.993 1.0 0 1.5708 1.5708</pose>
+        <static>true</static>
+        <uri>model://Apriltag36_11_00004</uri>
+      </include>
+
+      <!-- April Tag 7 -->
+      <include>
+        <name>Apriltag36_11_00007</name>
+        <pose>3.507 -5.0 1.0 0 1.5708 0</pose>
+        <static>true</static>
+        <uri>model://Apriltag36_11_00007</uri>
+      </include>
+
+    <!-- April Tag 9 -->
+      <include>
+        <name>Apriltag36_11_00009</name>
+        <pose>0.0 -8.007 1.0 1.5708 1.5708 0</pose>
+        <static>true</static>
+        <uri>model://Apriltag36_11_00009</uri>
+      </include>
+
+      <!-- Apriltag mount post 1 -->
+      <model name="post1">
+        <static>true</static>
+        <pose>-3.52 -5.0 0.0 0 0 0</pose>
+        <link name="post_link1">
+          <collision name="post_collision1">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="post_visual1">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <!-- Apriltag mount post 2 -->
+      <model name="post2">
+        <static>true</static>
+        <pose>0.0 -1.98 0.0 0 0 0</pose>
+        <link name="post_link2">
+          <collision name="post_collision2">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="post_visual2">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <!-- Apriltag mount post 3 -->
+      <model name="post3">
+        <static>true</static>
+        <pose>3.52 -5.0 0.0 0 0 0</pose>
+        <link name="post_link3">
+          <collision name="post_collision3">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="post_visual3">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <!-- Apriltag mount post 4 -->
+      <model name="post4">
+        <static>true</static>
+        <pose>0.0 -8.02 0.0 0 0 0</pose>
+        <link name="post_link1">
+          <collision name="post_collision4">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="post_visual4">
+            <geometry>
+              <box>
+                <size>0.025 0.025 2.5</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <model name="static_wall1">
+        <static>true</static>
+        <pose>0.0 -2.0 0.0 0 0 0</pose>
+        <link name="wall_link1">
+          <collision name="wall_collision1">
+            <geometry>
+              <box>
+                <size>7.0 0.001 0.4</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="wall_visual1">
+            <geometry>
+              <box>
+                <size>7.0 0.001 0.4</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <model name="static_wall2">
+        <static>true</static>
+        <pose>0.0 -8.0 0.0 0 0 0</pose>
+        <link name="wall_link2">
+          <collision name="wall_collision2">
+            <geometry>
+              <box>
+                <size>7.0 0.001 0.4</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="wall_visual2">
+            <geometry>
+              <box>
+                <size>7.0 0.001 0.4</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <model name="static_wall3">
+        <static>true</static>
+        <pose>-3.5 -5.0 0.0 0 0 0</pose>
+        <link name="wall_link3">
+          <collision name="wall_collision3">
+            <geometry>
+              <box>
+                <size>0.001 6.0 0.4</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="wall_visual3">
+            <geometry>
+              <box>
+                <size>0.001 6.0 0.4</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <model name="static_wall4">
+        <static>true</static>
+        <!-- <pose>3.5 -3.0 0.0 0 0 0</pose> -->
+        <pose>3.5 -5.0 0.0 0 0 0</pose>
+        <link name="wall_link4">
+          <collision name="wall_collision4">
+            <geometry>
+              <box>
+                <size>0.001 6.0 0.4</size>
+              </box>
+            </geometry>
+          </collision>
+          <visual name="wall_visual4">
+            <geometry>
+              <box>
+                <size>0.001 6.0 0.4</size>
+              </box>
+            </geometry>
+            <material>
+              <ambient>0.76 0.60 0.42 1.0</ambient>
+              <diffuse>0.76 0.60 0.42 1.0</diffuse>
+              <specular>0.1 0.1 0.1 1.0</specular>
+            </material>
+          </visual>
+        </link>
+      </model>
+
+      <light name='sun' type='directional'>
+        <pose>0 0 10 0 0 0</pose>
+        <cast_shadows>true</cast_shadows>
+        <intensity>1</intensity>
+        <direction>-0.5 0.10000000000000001 -0.90000000000000002</direction>
+        <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
+        <specular>0.200000003 0.200000003 0.200000003 1</specular>
+        <attenuation>
+          <range>1000</range>
+          <linear>0.01</linear>
+          <constant>0.90000000000000002</constant>
+          <quadratic>0.001</quadratic>
+        </attenuation>
+        <spot>
+          <inner_angle>0</inner_angle>
+          <outer_angle>0</outer_angle>
+          <falloff>0</falloff>
+        </spot>
+      </light>
+
+
+    </world>
+  </sdf>

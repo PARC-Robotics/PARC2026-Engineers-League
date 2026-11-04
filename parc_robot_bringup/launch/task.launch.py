@@ -63,7 +63,7 @@ def generate_launch_description():
         # List of actions to be added to the launch description later
         actions = []
 
-        # Set path to the task 1 parameter yaml file
+        # Set path to the task parameter yaml file
         params_file = os.path.join(
             pkg_path,
             "config/task_params.yaml",
