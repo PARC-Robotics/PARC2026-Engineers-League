@@ -36,8 +36,8 @@ rosdep install --from-paths src --ignore-src -r -y
 
 ## Build
 
-The repository is cloned into the `src` directory of a colcon workspace. The referee packages `parc_msgs` and
-`parc_referee`, supplied by the organisers, are placed in the same `src` directory.
+The repository is cloned into the `src` directory of a colcon workspace. It contains four packages:
+`parc_robot_description`, `parc_robot_bringup`, and the referee packages `parc_msgs` and `parc_referee`.
 
 ```bash
 source /opt/ros/jazzy/setup.bash
@@ -204,8 +204,8 @@ Speech recognition and text-to-speech are not part of this repository; solutions
 
 ## Referee
 
-The referee node, `parc_referee`, publishes the tag order and run status, records the run, and serves a
-dashboard at `http://localhost:8080/`. Judges use `http://localhost:8080/judge?token=<judge_token>`. The
+The referee node, `parc_referee`, with its messages in `parc_msgs`, publishes the tag order and run status,
+records the run, and serves a dashboard at `http://localhost:8080/`. Judges use `http://localhost:8080/judge?token=<judge_token>`. The
 default token, `parc2026`, is for testing only.
 
 ```bash
@@ -263,6 +263,8 @@ run takes longer on the wall clock, and nodes must use `use_sim_time`.
 | `parc_robot_bringup/scripts` | `depth_converter.py` (metres to millimetres, noise model), `scan_filter.py`, `scan_merger.py`, `respeaker_sim.py`. |
 | `parc_robot_bringup/rviz` | RViz configuration. |
 | `parc_robot_description` | Robot URDF (xacro), meshes, robot state publisher launch files. `sitoe_robot.urdf` and `sitoe_robot.sdf` are exported snapshots that the launch files do not use. |
+| `parc_msgs` | Referee message definitions: `TagOrder`, `StartSignal`, `TagVisit`, `Finish`, `RunStatus`. |
+| `parc_referee` | Referee node, web dashboard, `example_team` and the referee launch file. |
 | `resources` | Template for the team submission README. |
 
 ## References
