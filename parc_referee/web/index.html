@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PARC 2026 – Run</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --line: #2a313c; --text: #e6edf3; --muted: #8b949e;
+    --accent: #f2b134; --ok: #3fb950; --bad: #f85149; --warn: #d29922; --info: #58a6ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { display: flex; align-items: center; gap: 24px; padding: 16px 28px;
+           border-bottom: 1px solid var(--line); }
+  .brand { font-weight: 700; letter-spacing: .04em; color: var(--accent); }
+  .team { font-size: 28px; font-weight: 600; flex: 1; }
+  .badge { padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 14px;
+           letter-spacing: .06em; background: var(--line); }
+  .badge.ARMED { background: var(--info); color: #001; }
+  .badge.RUNNING { background: var(--ok); color: #001; }
+  .badge.FINISHED { background: var(--accent); color: #001; }
+  .badge.TIMED_OUT, .badge.TERMINATED { background: var(--bad); color: #fff; }
+  main { display: grid; grid-template-columns: minmax(320px, 1fr) 1.4fr; gap: 24px; padding: 24px 28px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .clock { font: 700 120px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+           font-variant-numeric: tabular-nums; text-align: center; letter-spacing: -.02em; }
+  .clock.low { color: var(--bad); }
+  .sub { text-align: center; color: var(--muted); margin-top: 6px; }
+  .order { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+  .chip { border: 2px solid var(--line); border-radius: 12px; padding: 14px 8px; text-align: center; }
+  .chip .n { font-size: 13px; color: var(--muted); }
+  .chip .id { font-size: 44px; font-weight: 700; }
+  .chip .st { font-size: 13px; font-weight: 600; min-height: 18px; }
+  .chip.reported { border-color: var(--info); }
+  .chip.confirmed { border-color: var(--ok); background: rgba(63,185,80,.12); }
+  .chip.rejected, .chip.skipped { border-color: var(--bad); opacity: .7; }
+  .alert { margin-top: 16px; padding: 12px 16px; border-radius: 8px; background: rgba(248,81,73,.15);
+           border: 1px solid var(--bad); font-weight: 600; display: none; }
+  .score { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 22px; text-align: center; }
+  .score div span { display: block; font-size: 34px; font-weight: 700; }
+  .score div { color: var(--muted); font-size: 13px; }
+  .score .total span { color: var(--accent); }
+  .imgwrap { aspect-ratio: 4/3; background: #000; border-radius: 8px; display: grid; place-items: center;
+             overflow: hidden; }
+  .imgwrap img { max-width: 100%; max-height: 100%; }
+  .imgwrap .none { color: var(--muted); }
+  .caption { margin-top: 10px; font-size: 18px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 15px; }
+  th, td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+  th { color: var(--muted); font-weight: 500; font-size: 13px; }
+  .good { color: var(--ok); } .badc { color: var(--bad); } .warn { color: var(--warn); } .muted { color: var(--muted); }
+  .judge { display: none; grid-column: 1 / -1; }
+  body.is-judge .judge { display: block; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  input { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
+          padding: 9px 12px; font: inherit; }
+  button { background: var(--line); color: var(--text); border: 1px solid #3b4452; border-radius: 8px;
+           padding: 9px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.primary { background: var(--accent); color: #111; border-color: var(--accent); }
+  button.danger { background: var(--bad); border-color: var(--bad); color: #fff; }
+  button.small { padding: 4px 10px; font-size: 13px; }
+  #msg { color: var(--bad); font-weight: 600; }
+  .events { max-height: 180px; overflow: auto; font: 13px/1.5 ui-monospace, Menlo, Consolas, monospace; color: var(--muted); }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } .clock { font-size: 80px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">PARC 2026 · REAL WORLD PHASE</div>
+  <div class="team" id="team">Waiting for the next team</div>
+  <div class="badge" id="state">IDLE</div>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="clock" id="clock">10:00</div>
+    <div class="sub" id="sub">Time remaining</div>
+    <div class="order" id="order"></div>
+    <div class="alert" id="alert"></div>
+    <div class="score">
+      <div>Tags<span id="sTags">0</span></div>
+      <div>Safe nav<span id="sSafe">0</span></div>
+      <div>Voice<span id="sVoice">0</span></div>
+      <div class="total">Total<span id="sTotal">0</span></div>
+    </div>
+    <div class="sub" id="scoreNote"></div>
+  </section>
+
+  <section class="panel">
+    <div class="imgwrap" id="imgwrap"><div class="none">No tag reported yet</div></div>
+    <div class="caption" id="caption"></div>
+    <table>
+      <thead><tr><th>#</th><th>Tag</th><th>Time</th><th>Order</th><th>Image check</th><th>3 s hold</th><th>Judges</th><th class="jcol"></th></tr></thead>
+      <tbody id="visits"></tbody>
+    </table>
+  </section>
+
+  <section class="panel judge">
+    <div class="row">
+      <input id="teamIn" placeholder="Team name" size="22">
+      <input id="orderIn" placeholder="Order, e.g. 7 1 9 4 (empty = random)" size="34">
+      <button class="primary" onclick="act('arm',{team:val('teamIn'),order:val('orderIn')})">Arm run</button>
+      <button onclick="act('restart')">Restart (intervention)</button>
+      <button onclick="if(confirm('End the run now? Points are kept and the clock stops.'))act('end')">End run</button>
+      <button class="danger" onclick="act('terminate',{reason:prompt('Reason for termination?','Safety stop')||'Terminated by judge'})">Terminate</button>
+      <button onclick="if(confirm('Clear the current run? It is saved first.'))act('reset')">Reset</button>
+      <span id="msg"></span>
+    </div>
+    <div class="row">
+      <span>Light contacts: <b id="light">0</b></span>
+      <button class="small" onclick="act('contact',{kind:'light',delta:1})">+1</button>
+      <button class="small" onclick="act('contact',{kind:'light',delta:-1})">−1</button>
+      <span style="margin-left:18px">Dangerous contacts: <b id="dangerous">0</b></span>
+      <button class="small" onclick="act('contact',{kind:'dangerous',delta:1})">+1</button>
+      <button class="small" onclick="act('contact',{kind:'dangerous',delta:-1})">−1</button>
+      <span style="margin-left:18px">Voice bonus: <b id="voiceSet">auto</b></span>
+      <button class="small" onclick="act('voice_bonus',{value:true})">Award</button>
+      <button class="small" onclick="act('voice_bonus',{value:false})">Deny</button>
+      <button class="small" onclick="act('voice_bonus',{value:null})">Auto</button>
+    </div>
+    <div class="events" id="events"></div>
+  </section>
+</main>
+
+<script>
+const token = new URLSearchParams(location.search).get('token');
+const isJudge = location.pathname.startsWith('/judge') && token;
+if (isJudge) document.body.classList.add('is-judge');
+document.querySelectorAll('.jcol').forEach(e => e.style.display = isJudge ? '' : 'none');
+
+const $ = id => document.getElementById(id);
+const val = id => $(id).value.trim();
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = s => { s = Math.max(0, Math.ceil(s)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+
+async function act(action, body = {}) {
+  $('msg').textContent = '';
+  const r = await fetch(`/api/judge/${action}`, {method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-Judge-Token': token}, body: JSON.stringify(body)});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) $('msg').textContent = j.error || `Error ${r.status}`;
+}
+
+const ORDER_LABEL = {in_order: ['In order', 'good'], out_of_order: ['Out of order', 'badc'],
+  duplicate: ['Duplicate', 'muted'], unknown_tag: ['Not a target', 'badc'], rejected: ['Rejected', 'badc']};
+const CHECK_LABEL = {match: ['Tag seen', 'good'], mismatch: ['Other tag seen', 'badc'],
+  not_detected: ['Not detected', 'warn'], no_image: ['No image', 'badc'], unchecked: ['Not checked', 'muted']};
+const HOLD_LABEL = {pending: ['Holding…', 'warn'], ok: ['Held', 'good'], moved: ['Moved', 'badc'], unknown: ['No odometry', 'muted']};
+const lab = (map, k) => { const [t, c] = map[k] || [k, '']; return `<span class="${c}">${t}</span>`; };
+
+let lastImg = null, clockBase = null, lastVersion = null;
+
+function render(s) {
+  if (s.version === lastVersion) return;   // unchanged: keep the DOM (and buttons) stable
+  lastVersion = s.version;
+  $('team').textContent = s.team || 'Waiting for the next team';
+  $('state').textContent = s.state.replace('_', ' ');
+  $('state').className = 'badge ' + s.state;
+  clockBase = {elapsed: s.elapsed_s, at: performance.now(), running: s.clock_running, limit: s.time_limit_s};
+  tickClock();
+  let sub = s.state === 'ARMED' && !s.clock_running ? 'Waiting for the start signal' : 'Time remaining';
+  if (s.attempt > 1) sub += ` · attempt ${s.attempt}`;
+  if (s.start_method) sub += ` · started by ${s.start_method}${s.heard ? ` (“${esc(s.heard)}”)` : ''}`;
+  if (s.end_reason) sub = esc(s.end_reason) + ` · ${s.elapsed_s.toFixed(1)} s`;
+  $('sub').innerHTML = sub;
+
+  // Order chips: status from the first in-order report of each tag.
+  const byTag = {}; let lastIdx = -1;
+  s.visits.forEach(v => { if (v.order_status === 'in_order') { byTag[v.tag_id] = v; lastIdx = Math.max(lastIdx, s.order.indexOf(v.tag_id)); } });
+  $('order').innerHTML = (s.order.length ? s.order : [null, null, null, null]).map((id, i) => {
+    const v = byTag[id];
+    let cls = '', st = '';
+    if (v) { cls = v.verdict === 'confirmed' ? 'confirmed' : v.verdict === 'rejected' ? 'rejected' : 'reported';
+             st = v.verdict === 'confirmed' ? 'Confirmed' : v.verdict === 'rejected' ? 'Rejected' : 'Reported'; }
+    else if (id !== null && i < lastIdx) { cls = 'skipped'; st = 'Skipped'; }
+    return `<div class="chip ${cls}"><div class="n">${i + 1}</div><div class="id">${id ?? '–'}</div><div class="st">${st}</div></div>`;
+  }).join('');
+
+  const alerts = [];
+  if (s.false_start) alerts.push('False start: the robot moved before the start signal.');
+  if (!s.odom && s.state !== 'IDLE') alerts.push('No odometry received: false-start and hold checks are off.');
+  $('alert').innerHTML = alerts.join('<br>');
+  $('alert').style.display = alerts.length ? 'block' : 'none';
+
+  const sc = s.score || {tag_points: 0, safe_points: 0, voice_bonus: 0, total: 0, pending: 0};
+  $('sTags').textContent = sc.tag_points; $('sSafe').textContent = sc.safe_points;
+  $('sVoice').textContent = sc.voice_bonus; $('sTotal').textContent = sc.total;
+  $('scoreNote').textContent = s.state === 'IDLE' ? '' :
+    `Provisional${sc.pending ? ` · ${sc.pending} visit(s) awaiting judges` : ''} · contacts: ${s.light} light, ${s.dangerous} dangerous`;
+
+  const latest = s.visits.length ? s.visits[s.visits.length - 1] : null;
+  if (latest && latest.image) {
+    if (lastImg !== latest.image) { $('imgwrap').innerHTML = `<img src="${latest.image}" alt="Tag ${latest.tag_id}">`; lastImg = latest.image; }
+    $('caption').innerHTML = `Tag <b>${latest.tag_id}</b> reported at ${fmt(latest.elapsed_s)} · ${lab(CHECK_LABEL, latest.image_check)}`;
+  } else {
+    $('imgwrap').innerHTML = `<div class="none">${latest ? `No image sent with tag ${latest.tag_id}` : 'No tag reported yet'}</div>`;
+    lastImg = null;
+    $('caption').innerHTML = latest ? `Tag <b>${latest.tag_id}</b> reported at ${fmt(latest.elapsed_s)}` : '';
+  }
+
+  $('visits').innerHTML = s.visits.map(v => `<tr>
+    <td>${v.index + 1}</td><td><b>${v.tag_id}</b></td><td>${fmt(v.elapsed_s)}</td>
+    <td>${lab(ORDER_LABEL, v.order_status)}</td>
+    <td>${lab(CHECK_LABEL, v.image_check)}${v.detected_ids.length && v.image_check !== 'match' ? ` <span class="muted">(${v.detected_ids.join(', ')})</span>` : ''}</td>
+    <td>${lab(HOLD_LABEL, v.hold)}</td>
+    <td>${v.verdict === 'confirmed' ? '<span class="good">Confirmed</span>' : v.verdict === 'rejected' ? '<span class="badc">Rejected</span>' : '<span class="muted">Pending</span>'}</td>
+    <td class="jcol" style="display:${isJudge ? '' : 'none'}">
+      <button class="small" onclick="act('verdict',{index:${v.index},verdict:'confirmed'})">✓</button>
+      <button class="small" onclick="act('verdict',{index:${v.index},verdict:'rejected'})">✗</button>
+      <button class="small" onclick="act('verdict',{index:${v.index},verdict:null})">Clear</button>
+      ${v.image ? `<a class="muted" href="${v.image}" target="_blank">image</a>` : ''}</td></tr>`).join('');
+
+  if (isJudge) {
+    $('light').textContent = s.light; $('dangerous').textContent = s.dangerous;
+    $('voiceSet').textContent = s.voice_bonus_override === null ? 'auto' : s.voice_bonus_override ? 'awarded' : 'denied';
+    $('events').innerHTML = s.events.slice().reverse().map(([t, e]) => `${t === null ? '  –  ' : fmt(t)}  ${esc(e)}`).join('<br>');
+  }
+}
+
+function tickClock() {
+  if (!clockBase) return;
+  let e = clockBase.elapsed;
+  if (clockBase.running) e += (performance.now() - clockBase.at) / 1000;
+  const left = Math.max(0, clockBase.limit - e);
+  $('clock').textContent = fmt(left);
+  $('clock').classList.toggle('low', left <= 60 && clockBase.running);
+}
+setInterval(tickClock, 200);
+
+function connect() {
+  const es = new EventSource('/api/events');
+  es.onmessage = ev => render(JSON.parse(ev.data));
+  es.onerror = () => { es.close(); setTimeout(connect, 1000); };
+}
+connect();
+</script>
+</body>
+</html>
