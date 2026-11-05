@@ -4,13 +4,13 @@
   <xacro:include filename="d435.xacro"/>
 
   <!-- Top D435 camera -->
-  <xacro:d435 name="top_camera" parent="top_chassis_link">
+  <xacro:d435 name="camera1" parent="top_chassis_link">
     <origin rpy="${pi/2} 0 ${pi/2}" xyz="0.0525 0.0 -0.9745"/>
     <mesh filename="package://parc_robot_description/meshes/realsense_d435_top.dae"/>
   </xacro:d435>
 
   <!-- Bottom D435 camera -->
-  <xacro:d435 name="bottom_camera" parent="base_link">
+  <xacro:d435 name="camera2" parent="base_link">
     <origin rpy="${pi/6} 0 ${pi/2}" xyz="0.433 0.0 -0.34"/>
     <mesh filename="package://parc_robot_description/meshes/realsense_d435_bottom.dae"/>
   </xacro:d435>

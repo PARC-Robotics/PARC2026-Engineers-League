@@ -1,125 +1,134 @@
-# gz topic published by the simulator core
+# Bridge between Gazebo and ROS 2. ROS topic names match the physical robot.
+# Topics under /sim/ exist only in simulation and must not be used by solutions.
+
 - ros_topic_name: "clock"
   gz_topic_name: "clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
   gz_type_name: "gz.msgs.Clock"
   direction: GZ_TO_ROS
 
-# gz topic published by IMU plugin
-- ros_topic_name: "imu"
-  gz_topic_name: "imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
+# Drive command (diff-drive plugin subscribes to the gz topic cmd_vel)
+- ros_topic_name: "cmd_vel"
+  gz_topic_name: "cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: ROS_TO_GZ
 
-# gz topic published by Sensors plugin (Lidar)
-- ros_topic_name: "scan"
-  gz_topic_name: "scan"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
-  direction: GZ_TO_ROS
-
-# gz topic published by the Pose publisher plugin
-- ros_topic_name: "sitoe_robot/pose"
-  gz_topic_name: "sitoe_robot/pose"
-  ros_type_name: "geometry_msgs/msg/Pose"
-  gz_type_name: "gz.msgs.Pose"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Base Bumper Contact)
-- ros_topic_name: "base_collisions"
-  gz_topic_name: "base_collisions"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
-  gz_type_name: "gz.msgs.Contacts"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Top Chassis Bumper Contact)
-- ros_topic_name: "top_chassis_collisions"
-  gz_topic_name: "top_chassis_collisions"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
-  gz_type_name: "gz.msgs.Contacts"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Left Wheel Bumper Contact)
-- ros_topic_name: "left_wheel_collisions"
-  gz_topic_name: "left_wheel_collisions"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
-  gz_type_name: "gz.msgs.Contacts"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Right Wheel Bumper Contact)
-- ros_topic_name: "right_wheel_collisions"
-  gz_topic_name: "right_wheel_collisions"
-  ros_type_name: "ros_gz_interfaces/msg/Contacts"
-  gz_type_name: "gz.msgs.Contacts"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Top Camera Color)
-- ros_topic_name: "top_camera_color/camera_info"
-  gz_topic_name: "top_camera_color/camera_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Bottom Camera Color)
-- ros_topic_name: "bottom_camera_color/camera_info"
-  gz_topic_name: "bottom_camera_color/camera_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Top Camera Depth)
-- ros_topic_name: "top_camera_depth/camera_info"
-  gz_topic_name: "top_camera_depth/camera_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
-  direction: GZ_TO_ROS
-
-# gz topic published by Sensors plugin (Bottom Camera Depth)
-- ros_topic_name: "bottom_camera_depth/camera_info"
-  gz_topic_name: "bottom_camera_depth/camera_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
-  direction: GZ_TO_ROS
-
-# gz topic published for Sensors plugin (Top depth camera point cloud)
-- ros_topic_name: "top_camera_depth/points"
-  gz_topic_name: "top_camera_depth/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-
-# gz topic published for Sensors plugin (Bottom depth camera point cloud)
-- ros_topic_name: "bottom_camera_depth/points"
-  gz_topic_name: "bottom_camera_depth/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-
- # gz topic published by DiffDrive plugin
-- ros_topic_name: "odom"
+- ros_topic_name: "botwheel_explorer/odom"
   gz_topic_name: "odom"
   ros_type_name: "nav_msgs/msg/Odometry"
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
 
-# gz topic published by DiffDrive plugin
 - ros_topic_name: "tf"
   gz_topic_name: "tf"
   ros_type_name: "tf2_msgs/msg/TFMessage"
   gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
 
-# gz topic subscribed to by DiffDrive plugin
-- ros_topic_name: "robot_base_controller/cmd_vel_unstamped"
-  gz_topic_name: "cmd_vel"
-  ros_type_name: "geometry_msgs/msg/Twist"
-  gz_type_name: "gz.msgs.Twist"
-  direction: ROS_TO_GZ
-
-# gz topic published by JointState plugin
 - ros_topic_name: "joint_states"
   gz_topic_name: "joint_states"
   ros_type_name: "sensor_msgs/msg/JointState"
   gz_type_name: "gz.msgs.Model"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "scan"
+  gz_topic_name: "scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+# camera1 (top RealSense)
+- ros_topic_name: "camera1/camera1/color/image_raw"
+  gz_topic_name: "camera1_color/image_raw"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera1/camera1/color/camera_info"
+  gz_topic_name: "camera1_color/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera1/camera1/depth/camera_info"
+  gz_topic_name: "camera1_depth/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera1/camera1/imu"
+  gz_topic_name: "camera1_imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+
+# Float depth in metres; depth_converter.py republishes it as
+# camera1/camera1/depth/image_rect_raw (16UC1, millimetres).
+- ros_topic_name: "sim/camera1/depth/depth_image"
+  gz_topic_name: "camera1_depth/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+# camera2 (bottom RealSense)
+- ros_topic_name: "camera2/camera2/color/image_raw"
+  gz_topic_name: "camera2_color/image_raw"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera2/camera2/color/camera_info"
+  gz_topic_name: "camera2_color/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera2/camera2/depth/camera_info"
+  gz_topic_name: "camera2_depth/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera2/camera2/imu"
+  gz_topic_name: "camera2_imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "sim/camera2/depth/depth_image"
+  gz_topic_name: "camera2_depth/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+# Simulation-only ground truth and contact sensors
+- ros_topic_name: "sim/pose"
+  gz_topic_name: "sitoe_robot/pose"
+  ros_type_name: "geometry_msgs/msg/Pose"
+  gz_type_name: "gz.msgs.Pose"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "sim/base_collisions"
+  gz_topic_name: "base_collisions"
+  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  gz_type_name: "gz.msgs.Contacts"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "sim/top_chassis_collisions"
+  gz_topic_name: "top_chassis_collisions"
+  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  gz_type_name: "gz.msgs.Contacts"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "sim/left_wheel_collisions"
+  gz_topic_name: "left_wheel_collisions"
+  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  gz_type_name: "gz.msgs.Contacts"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "sim/right_wheel_collisions"
+  gz_topic_name: "right_wheel_collisions"
+  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  gz_type_name: "gz.msgs.Contacts"
   direction: GZ_TO_ROS

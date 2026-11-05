@@ -61,39 +61,39 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        bottom_camera_color_frame:
+        camera2_color_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_color_optical_frame:
+        camera2_color_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_depth:
+        camera2_depth_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_depth_optical_frame:
+        camera2_depth_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_infra1_frame:
+        camera2_infra1_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_infra1_optical_frame:
+        camera2_infra1_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_infra2_frame:
+        camera2_infra2_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_infra2_optical_frame:
+        camera2_infra2_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        bottom_camera_link:
+        camera2_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -112,7 +112,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        lidar_link:
+        laser:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -122,39 +122,39 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        top_camera_color_frame:
+        camera1_color_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_color_optical_frame:
+        camera1_color_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_depth:
+        camera1_depth_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_depth_optical_frame:
+        camera1_depth_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_infra1_frame:
+        camera1_infra1_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_infra1_optical_frame:
+        camera1_infra1_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_infra2_frame:
+        camera1_infra2_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_infra2_optical_frame:
+        camera1_infra2_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        top_camera_link:
+        camera1_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -178,23 +178,23 @@ Visualization Manager:
           Value: false
         base_link:
           Value: false
-        bottom_camera_color_frame:
+        camera2_color_frame:
           Value: false
-        bottom_camera_color_optical_frame:
+        camera2_color_optical_frame:
           Value: false
-        bottom_camera_depth:
+        camera2_depth_frame:
           Value: true
-        bottom_camera_depth_optical_frame:
+        camera2_depth_optical_frame:
           Value: false
-        bottom_camera_infra1_frame:
+        camera2_infra1_frame:
           Value: false
-        bottom_camera_infra1_optical_frame:
+        camera2_infra1_optical_frame:
           Value: false
-        bottom_camera_infra2_frame:
+        camera2_infra2_frame:
           Value: false
-        bottom_camera_infra2_optical_frame:
+        camera2_infra2_optical_frame:
           Value: false
-        bottom_camera_link:
+        camera2_link:
           Value: false
         caster_wheel_link:
           Value: false
@@ -202,27 +202,27 @@ Visualization Manager:
           Value: false
         left_wheel_link:
           Value: false
-        lidar_link:
+        laser:
           Value: false
         right_wheel_link:
           Value: true
-        top_camera_color_frame:
+        camera1_color_frame:
           Value: false
-        top_camera_color_optical_frame:
+        camera1_color_optical_frame:
           Value: false
-        top_camera_depth:
+        camera1_depth_frame:
           Value: true
-        top_camera_depth_optical_frame:
+        camera1_depth_optical_frame:
           Value: false
-        top_camera_infra1_frame:
+        camera1_infra1_frame:
           Value: false
-        top_camera_infra1_optical_frame:
+        camera1_infra1_optical_frame:
           Value: false
-        top_camera_infra2_frame:
+        camera1_infra2_frame:
           Value: false
-        top_camera_infra2_optical_frame:
+        camera1_infra2_optical_frame:
           Value: false
-        top_camera_link:
+        camera1_link:
           Value: false
       Marker Scale: 0.20000000298023224
       Name: TF
@@ -232,18 +232,18 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            bottom_camera_link:
-              bottom_camera_color_frame:
-                bottom_camera_color_optical_frame:
+            camera2_link:
+              camera2_color_frame:
+                camera2_color_optical_frame:
                   {}
-              bottom_camera_depth:
-                bottom_camera_depth_optical_frame:
+              camera2_depth_frame:
+                camera2_depth_optical_frame:
                   {}
-              bottom_camera_infra1_frame:
-                bottom_camera_infra1_optical_frame:
+              camera2_infra1_frame:
+                camera2_infra1_optical_frame:
                   {}
-              bottom_camera_infra2_frame:
-                bottom_camera_infra2_optical_frame:
+              camera2_infra2_frame:
+                camera2_infra2_optical_frame:
                   {}
             caster_wheel_link:
               {}
@@ -251,22 +251,22 @@ Visualization Manager:
               {}
             left_wheel_link:
               {}
-            lidar_link:
+            laser:
               {}
             right_wheel_link:
               {}
-            top_camera_link:
-              top_camera_color_frame:
-                top_camera_color_optical_frame:
+            camera1_link:
+              camera1_color_frame:
+                camera1_color_optical_frame:
                   {}
-              top_camera_depth:
-                top_camera_depth_optical_frame:
+              camera1_depth_frame:
+                camera1_depth_optical_frame:
                   {}
-              top_camera_infra1_frame:
-                top_camera_infra1_optical_frame:
+              camera1_infra1_frame:
+                camera1_infra1_optical_frame:
                   {}
-              top_camera_infra2_frame:
-                top_camera_infra2_optical_frame:
+              camera1_infra2_frame:
+                camera1_infra2_optical_frame:
                   {}
       Update Interval: 0
       Value: true
