@@ -29,7 +29,6 @@ def generate_launch_description():
     )
     pkg_ros_gz_sim = FindPackageShare(package="ros_gz_sim").find("ros_gz_sim")
 
-    bridge_params = os.path.join(pkg_path, "config/gz_bridge.yaml")
     rviz_config_file = os.path.join(pkg_path, "rviz/task.rviz")
     world_file = os.path.join(pkg_path, "worlds/nba_sim.sdf")
     set_env_vars_resources = AppendEnvironmentVariable(
@@ -45,6 +44,29 @@ def generate_launch_description():
         default_value="true",
         description="Use simulation (Gazebo) clock if true",
     )
+
+    declare_audio_cmds = [
+        DeclareLaunchArgument(
+            "audio",
+            default_value="true",
+            description="Publish the ReSpeaker topics from the host microphone",
+        ),
+        DeclareLaunchArgument(
+            "audio_source",
+            default_value="mic",
+            description="Audio source: mic, file or silence",
+        ),
+        DeclareLaunchArgument(
+            "audio_device",
+            default_value="default",
+            description="ALSA/Pulse capture device passed to arecord -D",
+        ),
+        DeclareLaunchArgument(
+            "audio_file",
+            default_value="",
+            description="16 kHz mono 16-bit wav looped when audio_source is file",
+        ),
+    ]
 
     # Start robot state publisher
     start_robot_state_publisher_cmd = IncludeLaunchDescription(
@@ -116,34 +138,17 @@ def generate_launch_description():
 
         return actions
 
-    # Start Gazebo ROS bridge
-    start_gazebo_ros_bridge_cmd = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        arguments=[
-            "--ros-args",
-            "-p",
-            f"config_file:={bridge_params}",
-        ],
-        output="screen",
-    )
-
-    # Start Gazebo ROS Top Camera Color Image bridge
-    start_gazebo_ros_top_camera_color_image_bridge_cmd = Node(
-        package="ros_gz_image",
-        namespace="top_camera",
-        executable="image_bridge",
-        arguments=["/top_camera_color/image_raw"],
-        output="screen",
-    )
-
-    # Start Gazebo ROS Bottom Camera Color Image bridge
-    start_gazebo_ros_bottom_camera_color_image_bridge_cmd = Node(
-        package="ros_gz_image",
-        namespace="bottom_camera",
-        executable="image_bridge",
-        arguments=["/bottom_camera_color/image_raw"],
-        output="screen",
+    # Start the robot interface (bridge, depth/scan converters, audio)
+    start_robot_interface_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [os.path.join(pkg_path, "launch", "robot_interface.launch.py")]
+        ),
+        launch_arguments={
+            "audio": LaunchConfiguration("audio"),
+            "audio_source": LaunchConfiguration("audio_source"),
+            "audio_device": LaunchConfiguration("audio_device"),
+            "audio_file": LaunchConfiguration("audio_file"),
+        }.items(),
     )
 
     # Adjust default Gazebo camera view
@@ -183,6 +188,8 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_use_sim_time_cmd)
+    for declare_audio_cmd in declare_audio_cmds:
+        ld.add_action(declare_audio_cmd)
     ld.add_action(set_env_vars_resources)
 
     # Add any actions
@@ -190,8 +197,6 @@ def generate_launch_description():
     ld.add_action(delayed_camera_adjustment)
     ld.add_action(OpaqueFunction(function=spawn_gazebo_entities))
     ld.add_action(start_robot_state_publisher_cmd)
-    ld.add_action(start_gazebo_ros_bridge_cmd)
-    ld.add_action(start_gazebo_ros_top_camera_color_image_bridge_cmd)
-    ld.add_action(start_gazebo_ros_bottom_camera_color_image_bridge_cmd)
+    ld.add_action(start_robot_interface_cmd)
 
     return ld

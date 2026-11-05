@@ -24,6 +24,16 @@
   <depend>ros_gz_sim</depend>
   <depend>image_transport_plugins</depend>
   <depend>topic_tools</depend>
+  <depend>depthimage_to_laserscan</depend>
+  <depend>audio_common_msgs</depend>
+  <depend>tf2_ros_py</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>rviz2</depend>
+  <depend>python3-numpy</depend>
+  <depend>python3-yaml</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
